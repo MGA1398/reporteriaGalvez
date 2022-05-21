@@ -5,22 +5,31 @@ on:
     branches: [ main ]
     
 jobs:
-  deploy:
+  install:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: CRUD_Pets/package-lock.json
+      - name: Install dependencies
+        run: npm install
+        working-directory: CRUD_Pets
+      
+  deploy:  
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 14
-      - name: Install dependencies
-        run: npm install
-      - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
+      - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{secrets.HEROKU_APP}}
-          heroku_email: ${{secrets.HEROKU_API_EMAIL}}
-#           healthcheck: "https://${{secrets.HEROKU_APP}}.herokuapp.com/health"
-#           rollbackonhealthcheckfailed: true
+          heroku_email: ${{secrets.HEROKU_API_EMAIL}}to Heroku
+#         healthcheck: "https://${{secrets.HEROKU_APP}}.herokuapp.com/health"
+#         rollbackonhealthcheckfailed: true
