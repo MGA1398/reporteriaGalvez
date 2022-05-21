@@ -7,8 +7,9 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  project:
     runs-on: ubuntu-latest
+<<<<<<< HEAD
     
     steps:
     - name: Echo the message
@@ -17,3 +18,9 @@ jobs:
     - name: Echo the message
       run:
         echo "Working"
+=======
+    steps:
+    - name: Echo the message
+      run:
+        echo "Success"
+>>>>>>> 0985c46ca33c79e5bb1eea338207bdfcf5089d8a
